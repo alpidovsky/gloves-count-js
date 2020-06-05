@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html>
+<meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+<head>
+<style>
+body {
+	font-family: Georgia, Arial, "Courier New";
+	font-size: 1.3em;
+	margin: 0em;
+	background: #EEEEFF;
+}
+h1, h2 {
+	text-align: center;
+	margin-block-start: 0.5em;
+    margin-block-end: 0.5em;
+}
+p {
+	line-height: 1.3em;
+}
+table {
+	text-align: left;
+	line-height: 1.3;
+}
+#header {
+	width: 100%;
+    background: #e0c4ff;
+    padding: 0.8em 0;
+}
+#content {
+	text-align: center;
+	padding: 0.1em 1.2em;
+	color: #333333;
+}
+p.underheader {
+	text-align: center;
+	color: #333333;
+	margin-block-end: 0.5em;
+}
+.black {
+	background: #444466;
+	color: #FFFFFF;
+	padding: 0px 6px;
+	border-radius: 10px;
+}
+.h1white {
+	background: #444466;
+	color: #FFFFFF;
+	padding: 5px 0 5px 15px;
+	border-radius: 20px 0 0 20px;
+	box-shadow: inset 5px -10px 5px 0px #000000;
+}
+.white {
+	background: #FFFFFF;
+	color: #000000;
+	padding: 0px 6px;
+	border-radius: 10px;
+}
+.h1black {
+	background: #FFFFFF;
+	color: #444466;
+	padding: 5px 15px 5px 0;
+	border-radius: 0 20px 20px 0;
+	box-shadow: inset -5px -10px 5px 0px #444466;
+}
+.different {
+	background: #e0c4ff;
+	color: #050f86;
+	padding: 0px 6px;
+	border-radius: 10px;
+}
+</style>
+</head>
+<body>
+<div id="header">
+	<h1><span class="h1white">Gloves</span><span class="h1black">Count</span></h1>
+	<p class="underheader">Данная программа решает задачу о цвете последней перчатки в мешке.</p>
+</div>
+<div id="content">
+<h2>Условия задачи:</h2>
+<table align="center">
+	<tr>
+		<td>
+			<ul>
+				<li>В мешке находится X белых перчаток и Y чёрных перчаток.</li>
+				<li>Перчатки достают из мешка парами.</li>
+				<li>Если достали пару перчаток одного цвета, то в мешок кладут чёрную перчатку.</li>
+				<li>Если достали пару перчаток разного цвета, то в мешок кладут белую перчатку.</li>
+			</ul>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			</p>Какого цвета окажется перчатка, которая останется в мешке последней?</p>
+		</td>
+	</tr>
+</table>
+<p><hr align="center" width="80%" color="#CCCCCC" /></p>
+
+<script>
+	var white; // Количество белых перчаток
+    var black; // Количество черных перчаток
+    var iteration; // Счетчик количесва циклов
+	
+	// Массивы, из которых случайно выбирается один элемент
+    let stringArray = ['ЧЕРНЫЕ', 'БЕЛЫЕ', 'РАЗНЫЕ'];
+    let stringArrayWhites = ['БЕЛЫЕ', 'РАЗНЫЕ'];
+    let stringArrayBlacks = ['ЧЕРНЫЕ', 'РАЗНЫЕ'];
+	
+	var random = null; // Переменная, в которую записывается случайное значение
+    var again; // Переменная определяет, повторить ли решение задачи еще раз
+    var log; // Переменная
+    var yn;
+	
+	function isInt(value) {
+		return !isNaN(value) && 
+        parseInt(Number(value)) == value && 
+        !isNaN(parseInt(value, 10));
+	}
+	
+			// Вводим количество перчаток
+            while (true) {
+                // document.writeln('<p>Пожалуйста, введите количество БЕЛЫХ перчаток (X):</p>');
+                try {
+                    // white = Integer.parseInt(reader.readLine());
+					// setWhite();
+					white = prompt('Пожалуйста, введите количество БЕЛЫХ перчаток (X):');
+					if (isInt(white)) {
+						// alert ('Принято. Количество белых перчаток в мешке - ' + white);
+						break;
+					} else { 
+						alert ('ОШИБКА! Вы ввели недопустимое значение! Введите целое число!');
+					}
+                    // document.writeln('<p>Принято. Количество белых перчаток в мешке - ' + white + '</p>');
+                } catch (e) {
+                    document.writeln('<p>ОШИБКА! Вы ввели недопустимое значение! Введите целое число!</p>');
+					throw e;
+					break;
+                }
+            }
+			
+            while (true) {
+                // document.writeln('<p>Пожалуйста, введите количество ЧЕРНЫХ перчаток (Y):</p>');
+                try {
+                    // black = Integer.parseInt(reader.readLine());
+					// setBlack();
+					black = prompt('Пожалуйста, введите количество ЧЕРНЫХ перчаток (Y):');
+					if (isInt(black)) {
+						// alert ('Принято. Количество черных перчаток в мешке - ' + black);
+						break;
+					} else { 
+						alert ('ОШИБКА! Вы ввели недопустимое значение! Введите целое число!');
+					}
+					// document.writeln('<p>Принято. Количество черных перчаток в мешке - ' + black + '</p>');
+                } catch (e) {
+                    document.writeln('<p>ОШИБКА! Вы ввели недопустимое значение! Введите целое число!</p>');
+					throw e;
+					break;
+                }
+            }
+			
+			while (true) {
+                try {
+					log = prompt('Хотите, чтобы программа отобразила список всех действий? Y(да)/N(нет)');
+					if ((log == "y") || (log == "Y")) {
+						yn = true;
+						// alert ('Принято. Список действий будет отображен.');
+						break;
+					} else if ((log == "n") || (log == "N")) { 
+						yn = false;
+						// alert ('Принято. Список действий не будет отображен.');
+						break;
+					} else {
+						alert ('Недопустимое значение! Введите Y или N!');
+					}
+                } catch (e) {
+                    document.writeln('<p>ОШИБКА! Вы ввели недопустимое значение!</p>');
+					throw e;
+					break;
+                }
+            }
+
+			// Переменные для указания в конце, перед ответом
+            var whiteStart = white;
+            var blackStart = black;
+            iteration = 0; // Сброс счетчика циклов
+
+            // Печатаем начальные заданные условия
+			document.writeln('<h2>Исходные данные:</h2>');
+            document.writeln('<p>Изначальное количество перчаток в мешке: БЕЛЫХ - ' + white + ', ЧЕРНЫХ - ' + black);
+			document.writeln('<p><hr align="center" width="80%" color="#CCCCCC" /></p>');
+			if (yn) {
+				document.writeln('<h2>Список действий:</h2>');
+				document.writeln('<table cellpadding="10" cellspacing="10" align="center"><tr><td colspan="2"><center><strong>Действие:</strong></center></td><td><center><strong>Осталось <br />перчаток:</strong></center></td></tr>');
+			}
+			
+			// Основной цикл задачи
+            while (true) {
+                var idx = stringArray[Math.floor(Math.random() * stringArray.length)];
+                var idw = stringArrayWhites[Math.floor(Math.random() * stringArrayWhites.length)];
+				var idb = stringArrayBlacks[Math.floor(Math.random() * stringArrayBlacks.length)];
+
+                if ((black == 1 && white == 0) || (white == 1 && black == 0)) { // Условие остановки цикла
+                    break;
+                } else if (black == 1 && white == 1) {
+                    random = 'РАЗНЫЕ';
+                    black--;
+                } else if (black == 1 && white >= 2) {
+                    random = idw;
+                    if (random == 'БЕЛЫЕ') {
+                        white = white - 2;
+                        black++;
+                    } else if (random == 'РАЗНЫЕ') {
+                        black--;
+                    }
+                } else if (black == 0 && white >= 2) {
+                    random = 'БЕЛЫЕ';
+                    white = white - 2;
+                    black++;
+                } else if (black >= 2 && white == 1) {
+                    random = idb;
+                    if (random == 'ЧЕРНЫЕ') {
+                        black--;
+                    } else if (random == 'РАЗНЫЕ') {
+                        black--;
+                    }
+                } else if (black >= 2 && white == 0) {
+                    random = 'ЧЕРНЫЕ';
+                    black--;
+                } else if (black >= 2 && white >= 2) {
+                    random = idx;
+                    if (random == 'ЧЕРНЫЕ') {
+                        black--;
+                    } else if (random == 'РАЗНЫЕ') {
+                        black--;
+                    } else if (random == 'БЕЛЫЕ') {
+                        white = white - 2;
+                        black++;
+                    }
+                }
+
+                iteration++;
+
+                if (yn) {
+                    document.write('<tr><td> ' + iteration + '. </td><td>Забрали две перчатки ' + random + ',<br />');
+                    if ((random == 'БЕЛЫЕ') || (random == 'ЧЕРНЫЕ')) {
+                        document.writeln('положили обратно одну ЧЕРНУЮ.</td>');
+                    } else {
+                        document.writeln('положили обратно одну БЕЛУЮ.</td>');
+                    }
+                    document.writeln('<td>БЕЛЫХ - ' + white + ', <br />ЧЕРНЫХ - ' + black + '</td></tr>');
+                }
+            }
+			
+			if (yn) {
+				document.writeln('</table>');
+				document.writeln('<hr align="center" width="80%" color="#CCCCCC" />');
+				document.writeln('<p>Изначальное количество перчаток в мешке: БЕЛЫХ - ' + whiteStart + ', ЧЕРНЫХ - ' + blackStart + '</p>');
+			}
+            document.writeln('<h2>Вопрос:</h2>');
+            document.writeln('<p>Какого цвета перчатка осталась в мешке последней?</p>');
+            document.writeln('<h2>Ответ:</h2>');
+            if (white == 1 && black == 0) {
+                document.writeln('<p>Последней в мешке оказалась БЕЛАЯ перчатка.</p>');
+            } else if (black == 1 && white == 0) {
+                document.writeln('<p>Последней в мешке оказалась ЧЕРНАЯ перчатка.</p>');
+            }
+			document.writeln('<hr align="center" width="80%" color="#CCCCCC" />');
+			document.writeln('<p>© 2020 Александр Андреевич Альпидовский. Программа GlovesCount.</p>');
+		
+		let patterns = [
+		{text: "БЕЛАЯ", classes: ['white']},
+		{text: "БЕЛЫХ", classes: ['white']},
+		{text: "БЕЛУЮ", classes: ['white']},
+		{text: "БЕЛЫЕ", classes: ['white']},
+		{text: "белых", classes: ['white']},
+		{text: "белую", classes: ['white']},
+		{text: "ЧЕРНАЯ", classes: ['black']},
+		{text: "ЧЕРНЫХ", classes: ['black']},
+		{text: "ЧЕРНУЮ", classes: ['black']},
+		{text: "ЧЕРНЫЕ", classes: ['black']},
+		{text: "чёрных", classes: ['black']},
+		{text: "чёрную", classes: ['black']},
+		{text: "РАЗНЫЕ", classes: ['different']},
+		{text: "разного", classes: ['different']}
+		];
+
+		const marker = ( text, patterns ) => {
+			return patterns.reduce( ( result, current ) => {
+				let regexp = new RegExp(current.text, 'g');
+				let style = current.classes.join(' ');
+				return result.replace( regexp, `<span class="${ style }">${ current.text }</span>` );
+			}, text );
+		}
+
+		let text = document.body.innerHTML;
+		document.body.innerHTML = marker( text, patterns );
+</script>
+</div>
+</body>
+</html>
